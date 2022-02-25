@@ -1,5 +1,5 @@
 const chalk = require("chalk");
-const debug = require("debug")("series:error:");
+const debug = require("debug")("social-network:error:");
 
 const errorNotFound = (req, res) => {
   debug(chalk.red("error: Not found"));

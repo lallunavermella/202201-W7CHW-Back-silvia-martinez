@@ -1,4 +1,4 @@
-const debug = require("debug")("robots:database");
+const debug = require("debug")("social-network:database");
 const chalk = require("chalk");
 const mongoose = require("mongoose");
 
