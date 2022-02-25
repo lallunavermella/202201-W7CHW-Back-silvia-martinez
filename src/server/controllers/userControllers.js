@@ -18,9 +18,9 @@ const userRegister = async (req, res, next) => {
       return;
     }
     const password = await bcrypt.hash(user.password, 10);
-    const newUser = await User.create({ ...user, password });
+    await User.create({ ...user, password });
     debug(chalk.bold.bgBlue.magenta(`Created new user: ${user.userName}`));
-    res.status(201).json(newUser);
+    res.status(201).json({ name: user.name, userName: user.userName });
   } catch (error) {
     debug(chalk.italic.bold.bgRed.green("failed to create user"));
     error.message = "failed to create user";
