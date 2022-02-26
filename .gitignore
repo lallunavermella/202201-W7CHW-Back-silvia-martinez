@@ -1,6 +1,6 @@
 node_modules
 .env
 .vscode
-
+.scannerwork
 .DS_Store
 coverage
