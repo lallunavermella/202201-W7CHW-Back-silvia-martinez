@@ -5,6 +5,11 @@ const chalk = require("chalk");
 const fs = require("fs"); */
 const User = require("../../database/models/User");
 
+const listUsers = async (req, res) => {
+  const users = await User.find();
+  res.json({ users });
+};
+
 const userRegister = async (req, res, next) => {
   const user = req.body;
 
@@ -37,4 +42,4 @@ const userRegister = async (req, res, next) => {
   }
 };
 
-module.exports = userRegister;
+module.exports = { userRegister, listUsers };
