@@ -60,9 +60,9 @@ describe("Given a user register controller", () => {
       expect(mockJson);
     });
   });
-  describe("When it receives a request with an existint userName", () => {
+  describe("When it receives a request with an existing userName", () => {
     test("Then it should return a error", async () => {
-      const error = new Error("faile to create user");
+      const error = new Error("failed to create user");
       const next = jest.fn();
       const req = {
         body: {
