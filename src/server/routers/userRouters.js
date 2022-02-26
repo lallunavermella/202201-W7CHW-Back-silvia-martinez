@@ -1,6 +1,9 @@
 const express = require("express");
 const { validate, Joi } = require("express-validation");
+const multer = require("multer");
 const userRegister = require("../controllers/userControllers");
+
+const uploads = multer({ dest: "uploads" });
 
 const router = express();
 
@@ -13,6 +16,11 @@ const UserSchema = {
   }),
 };
 
-router.post("/register", validate(UserSchema), userRegister);
+router.post(
+  "/register",
+  uploads.single("image"),
+  validate(UserSchema),
+  userRegister
+);
 
 module.exports = router;
