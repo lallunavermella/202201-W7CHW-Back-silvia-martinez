@@ -5,6 +5,7 @@ const {
   listUsers,
   userLogin,
 } = require("../controllers/userControllers");
+const auth = require("../middlewares/auth");
 
 const router = express();
 
@@ -19,6 +20,6 @@ const UserSchema = {
 
 router.post("/register", validate(UserSchema), userRegister);
 router.post("/login", userLogin);
-router.get("/list", listUsers);
+router.get("/list", auth, listUsers);
 
 module.exports = router;
