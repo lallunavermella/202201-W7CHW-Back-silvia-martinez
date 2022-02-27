@@ -4,7 +4,7 @@ const { MongoMemoryServer } = require("mongodb-memory-server");
 const { default: mongoose } = require("mongoose");
 const connectDB = require("../../database");
 const User = require("../../database/models/User");
-const userRegister = require("./userControllers");
+const { userRegister } = require("./userControllers");
 
 jest.mock("jsonwebtoken", () => ({
   ...jest.requireActual("jsonwebtoken"),
@@ -50,7 +50,6 @@ describe("Given a user register controller", () => {
           name: "joselito",
           userName: "joselit0",
           password: "1234",
-          image: "unaimagen.jpg",
         },
       };
 
@@ -69,7 +68,6 @@ describe("Given a user register controller", () => {
           name: "joselito",
           userName: "Pepe",
           password: "1234",
-          image: "unaimagen.jpg",
         },
       };
       User.create = jest.fn().mockRejectedValue(error);
