@@ -46,9 +46,18 @@ const userRegister = async (req, res, next) => {
 
 const userLogin = async (req, res, next) => {
   const { userName, password } = req.body;
-  const user = await User.findOne({ username: userName });
-  const isRightPassword = await bcrypt.compare(password, user?.password ?? "");
-  if (!user || !isRightPassword) {
+  const user = await User.findOne({ userName });
+
+  if (!user) {
+    const error = new Error("Incorrect password or username");
+    error.status = 401;
+    next(error);
+    return;
+  }
+
+  const isRightPassword = await bcrypt.compare(password, user.password);
+
+  if (!isRightPassword) {
     const error = new Error("Incorrect password or username");
     error.status = 401;
     next(error);
@@ -65,4 +74,5 @@ const userLogin = async (req, res, next) => {
 
   res.json({ token });
 };
+
 module.exports = { userRegister, listUsers, userLogin };
