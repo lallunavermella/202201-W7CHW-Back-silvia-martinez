@@ -9,18 +9,7 @@ const User = require("../../database/models/User");
 
 const listUsers = async (req, res, next) => {
   try {
-    const users = await User.find();
-    res.status(200).json({ users });
-  } catch (error) {
-    debug(chalk.italic.bold.bgRed.green("Error"));
-    error.status = 400;
-    next(error);
-  }
-};
-
-const listUserFriends = async (req, res, next) => {
-  try {
-    const users = await User.find().populate({ path: "friend" });
+    const users = await User.find().populate("friend").populate("enemie");
     res.status(200).json({ users });
   } catch (error) {
     debug(chalk.italic.bold.bgRed.green("Error"));
@@ -93,4 +82,4 @@ const userLogin = async (req, res, next) => {
   res.json({ token });
 };
 
-module.exports = { userRegister, listUsers, userLogin, listUserFriends };
+module.exports = { userRegister, listUsers, userLogin };
