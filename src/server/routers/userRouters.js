@@ -1,7 +1,10 @@
 const express = require("express");
 const { validate, Joi } = require("express-validation");
-
-const { userRegister, listUsers } = require("../controllers/userControllers");
+const {
+  userRegister,
+  listUsers,
+  userLogin,
+} = require("../controllers/userControllers");
 
 const router = express();
 
@@ -15,6 +18,7 @@ const UserSchema = {
 };
 
 router.post("/register", validate(UserSchema), userRegister);
+router.post("/login", userLogin);
 router.get("/list", listUsers);
 
 module.exports = router;
