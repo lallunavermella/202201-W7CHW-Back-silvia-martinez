@@ -45,10 +45,9 @@ const userRegister = async (req, res, next) => {
 };
 
 const userLogin = async (req, res, next) => {
-  const { username, password } = req.body;
-  const user = await User.findOne({ username });
+  const { userName, password } = req.body;
+  const user = await User.findOne({ username: userName });
   const isRightPassword = await bcrypt.compare(password, user?.password ?? "");
-
   if (!user || !isRightPassword) {
     const error = new Error("Incorrect password or username");
     error.status = 401;
