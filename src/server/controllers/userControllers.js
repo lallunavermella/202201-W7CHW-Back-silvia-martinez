@@ -15,10 +15,10 @@ const userRegister = async (req, res, next) => {
 
   try {
     const userName = await User.findOne({ username: user.userName });
+
     if (!userName) {
       debug(chalk.italic.bold.bgRed.green("username taken"));
       res.status(400).json({ error: "username taken" });
-      return;
     }
     if (!user.password) {
       debug(chalk.italic.bold.bgRed.green("password required"));
@@ -26,6 +26,7 @@ const userRegister = async (req, res, next) => {
       return;
     }
     const password = await bcrypt.hash(user.password, 10);
+
     await User.create({ ...user, password });
     /* const oldName = path.join("uploads", req.file.filename);
     const newName = path.join("uploads", req.file.originalname);
@@ -36,8 +37,8 @@ const userRegister = async (req, res, next) => {
     debug(chalk.bold.bgBlue.magenta(`Created new user: ${user.userName}`));
     res.status(201).json({ name: user.name, userName: user.userName });
   } catch (error) {
-    debug(chalk.italic.bold.bgRed.green("failed to create user"));
-    error.message = "failed to create user";
+    debug(chalk.italic.bold.bgRed.green(`failed to create user:${error}`));
+    error.message = `failed to create user:${error}`;
     next(error);
   }
 };
