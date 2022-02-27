@@ -2,13 +2,31 @@ const bcrypt = require("bcrypt");
 const debug = require("debug")("social-network:controller:");
 const chalk = require("chalk");
 const jwt = require("jsonwebtoken");
+
 /* const path = require("path");
 const fs = require("fs"); */
 const User = require("../../database/models/User");
 
-const listUsers = async (req, res) => {
-  const users = await User.find();
-  res.json({ users });
+const listUsers = async (req, res, next) => {
+  try {
+    const users = await User.find();
+    res.status(200).json({ users });
+  } catch (error) {
+    debug(chalk.italic.bold.bgRed.green("Error"));
+    error.status = 400;
+    next(error);
+  }
+};
+
+const listUserFriends = async (req, res, next) => {
+  try {
+    const users = await User.find().populate({ path: "friend" });
+    res.status(200).json({ users });
+  } catch (error) {
+    debug(chalk.italic.bold.bgRed.green("Error"));
+    error.status = 400;
+    next(error);
+  }
 };
 
 const userRegister = async (req, res, next) => {
@@ -75,4 +93,4 @@ const userLogin = async (req, res, next) => {
   res.json({ token });
 };
 
-module.exports = { userRegister, listUsers, userLogin };
+module.exports = { userRegister, listUsers, userLogin, listUserFriends };
