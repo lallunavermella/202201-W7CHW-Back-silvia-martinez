@@ -51,3 +51,18 @@ describe("Given a userRouter", () => {
     });
   });
 });
+
+describe("Given a userLogin", () => {
+  describe("When it receives a post petition at /login/ ", () => {
+    test("Then it should respons with a status 201", async () => {
+      const user = {
+        userName: "Marta",
+        password: "1234",
+      };
+
+      const { body } = await request(app).post("/login").send(user).expect(200);
+
+      expect(body.username).toBe(user.username);
+    });
+  });
+});
