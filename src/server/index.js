@@ -7,6 +7,7 @@ const userRouter = require("./routers/userRouters");
 const { errorNotFound, generalError } = require("./middlewares/errors");
 
 const app = express();
+
 app.use(express.static("uploads"));
 app.use(morgan("dev"));
 app.use(helmet());

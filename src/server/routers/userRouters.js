@@ -1,5 +1,8 @@
 const express = require("express");
 const { validate, Joi } = require("express-validation");
+const multer = require("multer");
+
+const upload = multer({ dest: "uploads" });
 const {
   userRegister,
   listUsers,
@@ -14,11 +17,16 @@ const UserSchema = {
     name: Joi.string().required(),
     userName: Joi.string().required(),
     password: Joi.string().required(),
-    image: Joi.string(),
+    // image: Joi.any(),
   }),
 };
 
-router.post("/register", validate(UserSchema), userRegister);
+router.post(
+  "/register",
+  upload.single("image"),
+  validate(UserSchema),
+  userRegister
+);
 router.post("/login", userLogin);
 router.get("/list", auth, listUsers);
 
