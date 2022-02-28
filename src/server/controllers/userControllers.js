@@ -2,9 +2,14 @@ const bcrypt = require("bcrypt");
 const debug = require("debug")("social-network:controller:");
 const chalk = require("chalk");
 const jwt = require("jsonwebtoken");
-
-/* const path = require("path");
-const fs = require("fs"); */
+const path = require("path");
+const fs = require("fs");
+const {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+} = require("firebase/storage");
 const User = require("../../database/models/User");
 
 const listUsers = async (req, res, next) => {
@@ -35,12 +40,28 @@ const userRegister = async (req, res, next) => {
     }
     const password = await bcrypt.hash(user.password, 10);
 
-    await User.create({ ...user, password });
-    /* const oldName = path.join("uploads", req.file.filename);
-    const newName = path.join("uploads", req.file.originalname);
-    fs.rename(oldName, newName, async () => {
-      await User.findByIdAndUpdate(user.id, { image: req.file.originalname });
-    }); */
+    const newUser = await User.create({ ...user, password });
+
+    fs.readFile(
+      path.join("uploads", req.file.filename),
+      async (error, file) => {
+        if (error) {
+          return next(error);
+        }
+        const extension = req.file.originalname.split(".")[1];
+        const storage = getStorage();
+        const userPictureRef = ref(
+          storage,
+          `user-pictures/${newUser.id}.${extension}`
+        );
+        const metadata = {
+          contentType: req.file.mimetype,
+        };
+        await uploadBytes(userPictureRef, file, metadata);
+        const url = await getDownloadURL(userPictureRef);
+        return User.findByIdAndUpdate(newUser.id, { image: url });
+      }
+    );
 
     debug(chalk.bold.bgBlue.magenta(`Created new user: ${user.userName}`));
     res.status(201).json({ name: user.name, userName: user.userName });
