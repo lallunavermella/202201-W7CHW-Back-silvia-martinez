@@ -4,3 +4,4 @@ node_modules
 .scannerwork
 .DS_Store
 coverage
+uploads
