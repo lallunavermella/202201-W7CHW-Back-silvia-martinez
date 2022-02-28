@@ -4,6 +4,8 @@ const chalk = require("chalk");
 const upServer = require("./server/upServer");
 const app = require("./server/index");
 const connectDatabase = require("./database");
+// eslint-disable-next-line no-unused-vars
+const firebase = require("./firebase/firebase");
 
 const port = process.env.PORT || 3089;
 const connectdB = process.env.MONGO_STRING;
