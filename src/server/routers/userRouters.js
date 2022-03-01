@@ -3,10 +3,12 @@ const { validate, Joi } = require("express-validation");
 const multer = require("multer");
 
 const upload = multer({ dest: "uploads" });
+
 const {
   userRegister,
   listUsers,
   userLogin,
+  addFriend,
 } = require("../controllers/userControllers");
 const auth = require("../middlewares/auth");
 
@@ -17,7 +19,6 @@ const UserSchema = {
     name: Joi.string().required(),
     userName: Joi.string().required(),
     password: Joi.string().required(),
-    // image: Joi.any(),
   }),
 };
 
@@ -29,5 +30,6 @@ router.post(
 );
 router.post("/login", userLogin);
 router.get("/list", auth, listUsers);
+router.post("/friend", auth, addFriend);
 
 module.exports = router;
