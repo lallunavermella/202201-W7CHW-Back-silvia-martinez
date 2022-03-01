@@ -103,4 +103,16 @@ const userLogin = async (req, res, next) => {
   res.json({ token });
 };
 
-module.exports = { userRegister, listUsers, userLogin };
+const addFriend = async (req, res) => {
+  const { idUser, idFriend } = req.body;
+  const user = await User.findById(idUser);
+  if (user) {
+    user.friend.push(idFriend);
+    await user.save();
+  }
+  return res.status(201).json({
+    message: `User ${user.name} was updated correctly with new friend`,
+  });
+};
+
+module.exports = { userRegister, listUsers, userLogin, addFriend };
